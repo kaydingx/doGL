@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <thread>
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
@@ -11,7 +12,11 @@ void processInput(GLFWwindow* window);
 
 int main()
 {
-	std::cout << "============== playGL started ==============" << std::endl;
+	using namespace std::literals::chrono_literals;//this is for 100ms literals of the sleep value
+	
+	unsigned int CurrentFrame = 0;
+
+	std::cout << "============== doGL started ==============" << std::endl;
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -42,6 +47,7 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+		++CurrentFrame;
 		processInput(window);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -50,6 +56,9 @@ int main()
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		std::this_thread::sleep_for(100ms);
+		std::cout << "render looping, current frame: " << CurrentFrame << std::endl;
 	}
 
 
